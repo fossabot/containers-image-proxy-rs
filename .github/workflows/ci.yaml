@@ -8,6 +8,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  merge_group:
 
 env:
   CARGO_NET_RETRY: 10
@@ -15,6 +16,10 @@ env:
   CI: 1
   RUSTUP_MAX_RETRIES: 10
   RUST_BACKTRACE: short
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   semver-checks:
@@ -61,3 +66,19 @@ jobs:
           fetch-depth: 20
       - name: Test ostree-rs-ext
         run: ./ci/test-ostree-rs-ext.sh
+
+  required-checks:
+    if: always()
+    needs: [semver-checks, build-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all jobs
+        env:
+          NEEDS: ${{ toJson(needs) }}
+        run: |
+          FAILED=$(echo "$NEEDS" | jq -r 'to_entries[] | select(.value.result | IN("success","skipped") | not) | .key')
+          if [ -n "$FAILED" ]; then
+            echo "The following jobs did not succeed: $FAILED"
+            exit 1
+          fi
+          echo "All jobs succeeded or were skipped."
