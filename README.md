@@ -1,4 +1,6 @@
 # Rust bindings for accessing the Go containers/image stack
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbootc-dev%2Fcontainers-image-proxy-rs.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbootc-dev%2Fcontainers-image-proxy-rs?ref=badge_shield)
+
 
 This crate contains a Rust API that forks `/usr/bin/skopeo` and
 talks to it via a custom API.  You can use it to fetch container
@@ -46,3 +48,7 @@ that will impose a maintenance burden to replicate:
 # Status
 
 API is subject to change.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbootc-dev%2Fcontainers-image-proxy-rs.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbootc-dev%2Fcontainers-image-proxy-rs?ref=badge_large)
